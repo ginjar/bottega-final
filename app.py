@@ -41,7 +41,7 @@ chores_schema = ChoreSchema(many=True)
 # def chore_get():
     
 # add new chores
-@app.route('/chore/add', methods = ['GET'] )
+@app.route('/chore/add', methods = ['POST'] )
 def chore_add():
   
     task = request.json.get('task')
