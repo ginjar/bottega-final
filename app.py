@@ -88,13 +88,15 @@ users_schema = UserSchema(many=True)
 def find_user():
     username = request.json.get('username')
     password =  request.json.get('password')
-    query = "SELECT * FROM user WHERE username = '{0}' AND password = '{1}' ".format(username, password)
-    results = db.session.execute(query)
+    result = User.query.filter_by(username=username).first()
   
-    if results :
-       return jsonify({"user_info":users_schema.dump(results)})
+    if result :
+        if result.password == password:
+            return jsonify({"user_info": result.username})
+        else:
+            return jsonify({'message': "that is not the password", 'successful': False}),401
     else :
-        return jsonify({'message': "that is not a user", 'successful': False})
+        return jsonify({'message': "that is not a user", 'successful': False}),401
    
 
 @app.route('/user/add', methods = ['POST'])
